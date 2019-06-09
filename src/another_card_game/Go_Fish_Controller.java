@@ -1,6 +1,7 @@
 
 package another_card_game;
 
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +26,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 /**
@@ -47,10 +51,15 @@ public class Go_Fish_Controller implements Initializable {
     };
     
     private List<String> realCardNames = new ArrayList<>(Arrays.asList(cardNames));
-    @FXML private Button dealButton;
-    @FXML private Button goFishButton;
+    @FXML private JFXButton dealButton;
+    @FXML private JFXButton goFishButton;
     @FXML private Label userPoints;
     @FXML private Label enemyPoints;
+    
+    @FXML private Pane gameOverBoard;
+    @FXML private JFXButton resetGame; 
+    @FXML private JFXButton toggleButton; 
+    @FXML private Label gameCounter;
     
     String gamePlay;
     Date date = new Date();
@@ -108,7 +117,7 @@ public class Go_Fish_Controller implements Initializable {
         for(int i = 0; i < 52; i++) {
             //Setting up the card before adding it to the deck
             Pane card = new Pane();
-            card.setPrefSize(115.0, 175.0);
+            card.setPrefSize(115.0, 176.0);
             card.setLayoutX(14);
             card.setLayoutY(213);
             setCardBack(card);
@@ -492,12 +501,12 @@ public class Go_Fish_Controller implements Initializable {
         goFishButton.setDisable(true);
         
         if(Integer.parseInt(userPoints.getText()) > Integer.parseInt(enemyPoints.getText())) {
-            winnerName = "User";
+            winnerName = "Player 1";
         } else {
-            winnerName = "Enemy";
+            winnerName = "Player 2";
         }
         
-        Pane gameOverBoard = new Pane();
+        gameOverBoard = new Pane();
         gameOverBoard.setPrefSize(651.0, 572.0);
         gameOverBoard.setLayoutX(141.0);
         gameOverBoard.setLayoutY(14.0);
@@ -511,23 +520,93 @@ public class Go_Fish_Controller implements Initializable {
         Label winner = new Label();
         
         winner.setText("Winner : " + winnerName);
-        winner.setPrefSize(400.0, 85.0);
+        winner.setPrefSize(500.0, 85.0);
         winner.setFont(Font.font("System", 58.0));
+        
+        resetGame = new JFXButton();
+        resetGame.setText("Reset Game");
+        resetGame.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3)");
+        resetGame.setButtonType(JFXButton.ButtonType.RAISED);
+        resetGame.setFont(Font.font("System", 46.0));
+        resetGame.setPrefSize(605.0, 100.0);
+        resetGame.setRipplerFill(Paint.valueOf("black"));
+        resetGame.setOnMouseClicked((MouseEvent event) -> {
+            try {
+                resetGame();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Go_Fish_Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         
         table.getChildren().add(gameOverBoard);
         gameOverBoard.getChildren().add(winner);
         gameOverBoard.getChildren().add(gameOver);
+        gameOverBoard.getChildren().add(resetGame);
         
         gameOver.setLayoutX(147.0);
         gameOver.setLayoutY(22.0);
+        
         winner.setLayoutX(37.0);
         winner.setLayoutY(127.0);
+        
+        resetGame.setLayoutX(23.0);
+        resetGame.setLayoutY(451.0);
     }
+    
+    @FXML
+    private void resetGame() throws InterruptedException {
+        //This does not work so properly 
+        //The pane seems to still appear where it is removed from the table
+        //And that kinda make sense since it is not technically destroy
+        int tablePos = table.getChildren().indexOf(gameOverBoard);
+        table.getChildren().remove(tablePos);
+        
+        //This is if you want to just make it sure or something ...I don't really know anymore
+        //gameOverBoard.setDisbale(true);
+        //gameOverBoard.setOpacity(0);
+        
+        
+        dealButton.setDisable(false);
+        enemyPoints.setText("0");
+        userPoints.setText("0");
+        gameCounter.setText(String.valueOf(Integer.parseInt(gameCounter.getText()) + 1));
+        realCardNames.addAll(Arrays.asList(cardNames));
+        setUpDeck();
+    }
+    
+    @FXML
+    private void toggleTheme() {
+        String colorBlack = "black";
+        String colorWhite = "white";
+        //String colorKindaBlack = "rgba(0, 0, 0, 0.9)";
+        String colorKindaWhite = "rgba(255, 255, 255, 0.3)";
+        
+        if(toggleButton.getText().equals("DARK")) {
+            setUpButton(toggleButton, colorWhite, colorBlack, colorWhite, "LIGHT");
+            setUpButton(dealButton, colorWhite, colorBlack, colorWhite, dealButton.getText());
+            setUpButton(goFishButton, colorWhite, colorBlack, colorWhite, goFishButton.getText());
+            
+        } else {
+            setUpButton(toggleButton, colorBlack, colorKindaWhite, colorWhite, "DARK");
+            setUpButton(dealButton, colorBlack, colorKindaWhite, colorWhite, dealButton.getText());
+            setUpButton(goFishButton, colorBlack, colorKindaWhite, colorWhite, goFishButton.getText());
+            table.requestFocus();
+        }
+        
+    }
+    
+    @FXML
+    private void setUpButton(JFXButton btn, String sh, String bk, String tc, String txt) {
+        btn.setStyle("-fx-background-color: " + bk + ";" + 
+                                  "-fx-effect: dropshadow(three-pass-box, " + sh + ", 10, 0, 0, 0);");
+        btn.setTextFill(Paint.valueOf(tc));
+        btn.setText(txt);
+}
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        Image img = new Image("/images/wood3.jpg");
+        Image img = new Image("/images/wood2.jpg");
         BackgroundImage bk = new BackgroundImage(
                 img,
                 BackgroundRepeat.NO_REPEAT,
@@ -538,5 +617,4 @@ public class Go_Fish_Controller implements Initializable {
         table.setBackground(new Background(bk));
         setUpDeck();
     }    
-    
 }
