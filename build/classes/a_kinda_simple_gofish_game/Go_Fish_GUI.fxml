@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="table" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="a_kinda_simple_gofish_game.Go_Fish_Controller">
+   <children>
+      <JFXButton fx:id="dealButton" buttonType="RAISED" layoutX="14.0" layoutY="181.0" onAction="#deal" prefHeight="25.0" prefWidth="52.5" ripplerFill="WHITE" style="-fx-background-color: rgba(255,255,255,0.5);" text="DEAL" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="goFishButton" buttonType="RAISED" disable="true" layoutX="14.0" layoutY="394.0" onAction="#goFishPlayer" prefHeight="25.0" prefWidth="115.0" ripplerFill="WHITE" style="-fx-background-color: rgba(255,255,255,0.5);" text="GO FISH" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <AnchorPane fx:id="compInfo" layoutX="14.0" layoutY="14.0" prefHeight="161.0" prefWidth="115.0" style="-fx-background-color: rgba(255,255,255,0.5);">
+         <children>
+            <Label fx:id="compPoints" alignment="CENTER" layoutX="13.0" layoutY="61.0" prefHeight="92.0" prefWidth="89.0" text="0">
+               <font>
+                  <Font size="63.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="7.0" prefHeight="36.0" prefWidth="96.0" text="Player 2">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="13.0" layoutY="36.0" prefHeight="25.0" prefWidth="89.0" text="Points">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="playerInfo" layoutX="14.0" layoutY="425.0" prefHeight="161.0" prefWidth="115.0" style="-fx-background-color: rgba(255,255,255,0.5);">
+         <children>
+            <Label fx:id="playerPoints" alignment="CENTER" layoutX="13.0" layoutY="55.0" prefHeight="92.0" prefWidth="89.0" text="0">
+               <font>
+                  <Font size="63.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="7.0" prefHeight="36.0" prefWidth="96.0" text="Player 1">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="13.0" layoutY="36.0" prefHeight="25.0" prefWidth="89.0" text="Points">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXButton fx:id="toggleButton" buttonType="RAISED" layoutX="76.0" layoutY="181.0" onAction="#toggleTheme" prefHeight="25.0" prefWidth="52.5" ripplerFill="WHITE" style="-fx-background-color: rgba(255,255,255,0.5);" text="DARK" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <Pane layoutX="189.0" layoutY="194.0" prefHeight="66.0" prefWidth="560.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-background-radius: 100;">
+         <children>
+            <Label layoutX="69.0" layoutY="-4.0" text="Game #     : " textFill="#f2f2f2">
+               <font>
+                  <Font size="51.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameCounter" alignment="CENTER" layoutX="300.0" layoutY="-11.0" prefHeight="88.0" prefWidth="260.0" text="1" textFill="WHITE">
+               <font>
+                  <Font size="51.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
